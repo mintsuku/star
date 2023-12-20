@@ -1,0 +1,18 @@
+[package]
+name = "star"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.75"
+chrono = "0.4.31"
+clap = "4.4.11"
+flate2 = "1.0.28"
+interruptable = "0.1.0"
+rayon = "1.8.0"
+tar = "0.4.40"
+thiserror = "1.0.51"
+tokio = "1.35.1"
+tokio-tar = "0.3.1"
