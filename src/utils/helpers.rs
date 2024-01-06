@@ -2,6 +2,8 @@ use flate2::read::GzDecoder;
 use std::{fs::{File, self}, io::BufReader, env, path::Path};
 use tar::Archive;
 use lzma::reader::LzmaReader;
+use bzip2::read::BzDecoder;
+use bzip2::Decompress;
 use dialoguer::{theme::ColorfulTheme, Select};
 use super::enums::ArchiveType;
 
@@ -20,6 +22,11 @@ pub fn open_archive<P: AsRef<Path>>(filename: P, archive_type: ArchiveType) -> A
         ArchiveType::Xz => {
             let lzma_reader = LzmaReader::new_decompressor(file).unwrap();
             Archive::new(Box::new(lzma_reader) as Box<dyn std::io::Read>)
+        }
+
+        ArchiveType::Bz2 => {
+            let bzip2_reader = BzDecoder::new(file);
+            Archive::new(Box::new(bzip2_reader) as Box<dyn std::io::Read>)
         }
     }
 }

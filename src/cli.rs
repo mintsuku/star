@@ -25,4 +25,11 @@ pub fn cli() -> Command {
                 .arg(arg!(-v --verbose "Print verbose output"))
                 .arg_required_else_help(true),
         )
+        .subcommand(
+            Command::new("-bz2")
+                .about("Extracts .bz2 files")
+                .arg(arg!(<FILE> "File to extract").required(true))
+                .arg(arg!(-v --verbose "Print verbose output"))
+                .arg_required_else_help(true),
+        )
 }

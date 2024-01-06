@@ -38,6 +38,17 @@ fn main() {
             }
         }
 
+        Some(("-bz2", sub_matches)) => {
+            let filename = handle_filename(sub_matches);
+            let archive = open_archive(&filename, ArchiveType::Bz2);
+            let verbose = sub_matches.get_one::<bool>("verbose").expect("verbose");
+
+            if let Err(e) = extract_files(archive, *verbose) {
+                eprintln!("Error extracting .bz2 files: {}", e);
+                std::process::exit(1);
+            }
+        }
+
         Some(("-search", sub_matches)) => {
             let keyword = sub_matches.get_one::<String>("KEYWORD").expect("No keyword provided");
             println!("Searching for files containing the keyword '{}'", keyword);
@@ -68,6 +79,13 @@ fn main() {
                     let archive = open_archive(selected_file_path, ArchiveType::Xz);
                     if let Err(e) = extract_files(archive, *verbose) {
                         eprintln!("Error extracting .xz file: {}", e);
+                    }
+                }
+
+                "bz2" => {
+                    let archive = open_archive(selected_file_path, ArchiveType::Bz2);
+                    if let Err(e) = extract_files(archive, *verbose) {
+                        eprintln!("Error extracting .bz2 file: {}", e);
                     }
                 }
                 _ => {
