@@ -161,7 +161,6 @@ pub fn create_archive_from_files<P: AsRef<Path>>(
     archive_type: ArchiveType,
 ) -> Result<(), io::Error> {
     let mut output_file: Option<String> = None;
-
     match archive_type {
         ArchiveType::Gz => {
             output_file = Some(format!("{}.tar.gz", filename));

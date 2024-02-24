@@ -82,6 +82,10 @@ fn main() {
                     let files = dir.filter_map(Result::ok).map(|entry| entry.path()).collect::<Vec<_>>();
                     println!("Creating archive from files: {:?}", files);
                     create_archive_from_files(files, &filename, *verbose, *archive_type.as_ref().unwrap()).expect("Failed to create archive");
+                } else {
+                    // Single file is provided
+                    let files = vec![file_path];
+                    create_archive_from_files(files, &filename, *verbose, *archive_type.as_ref().unwrap()).expect("Failed to create archive");
                 }
             } else {
                 eprintln!("File or directory does not exist");
