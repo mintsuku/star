@@ -72,13 +72,13 @@ star -h
 
 ## TODO
 
-- [ ] Add support for bzip2 compressed tar files
+- [x] Add support for bzip2 compressed tar files
 - [ ] Implement wildcard search
 - [ ] Create man pages
 - [ ] Implement search by date/time
 - [x] Add verbosity levels
 - [ ] Add unit and integration tests
-- [ ] Support tar file creation
+- [x] Support tar file creation
 - [ ] Implement incremental backup feature
 - [ ] Support different compression levels
 - [ ] Handle large files more efficiently
