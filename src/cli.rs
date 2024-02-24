@@ -1,4 +1,4 @@
-use clap::{Command, Arg, arg};
+use clap::{Command, arg};
 
 pub fn cli() -> Command {
     Command::new("star")
@@ -30,6 +30,23 @@ pub fn cli() -> Command {
                 .about("Extracts .bz2 files")
                 .arg(arg!(<FILE> "File to extract").required(true))
                 .arg(arg!(-v --verbose "Print verbose output"))
+                .arg_required_else_help(true),
+        )
+
+        .subcommand(
+            Command::new("-c")
+                .about("Creates a .tar file")
+                .arg(arg!(<TYPE> "File type to create").required(true))
+                .arg(arg!(<FILE> "File to create").required(true))
+                .arg(arg!(-v --verbose "Print verbose output"))
+                .arg_required_else_help(true),
+               
+        )
+
+        .subcommand(
+            Command::new("-l")
+                .about("Lists the contents of a .tar file")
+                .arg(arg!(<FILE> "File to list").required(true))
                 .arg_required_else_help(true),
         )
 }

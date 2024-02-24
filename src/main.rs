@@ -5,9 +5,11 @@ use std::path::Path;
 
 
 
+
 mod utils;
-use utils::helpers::{extract_files, search_files, open_archive, handle_filename, prompt_user_to_select};
+use utils::helpers::{create_archive_from_files, extract_files, handle_filename, list_archive_contents, open_archive, prompt_user_to_select, search_files};
 use utils::enums::ArchiveType;
+use std::fs;
 
 
 fn main() {
@@ -47,6 +49,53 @@ fn main() {
                 eprintln!("Error extracting .bz2 files: {}", e);
                 std::process::exit(1);
             }
+        }
+
+
+        Some(("-c", sub_matches)) => {
+            let filename = handle_filename(sub_matches);
+            let verbose = sub_matches.get_one::<bool>("verbose").expect("verbose");
+            let file_arg = sub_matches.get_one::<String>("FILE").expect("No file provided");
+            let file_type = sub_matches.get_one::<String>("TYPE").expect("No file type provided");
+            let mut archive_type: Option<ArchiveType> = None;
+            match file_type.as_str() {
+                "gz" => {
+                    archive_type = Some(ArchiveType::Gz);
+                    println!("Creating .tar.gz archive");
+                }
+                "xz" => {
+                    archive_type = Some(ArchiveType::Xz);
+                }
+                "bz2" => {
+                    archive_type = Some(ArchiveType::Bz2);
+                }
+                _ => {
+                    eprintln!("Unsupported file type: {}", file_type);
+                    std::process::exit(1);
+                }
+            }
+            let file_path = Path::new(file_arg);
+            if file_path.exists() {
+                if file_path.is_dir() { // Changed this line
+                    // Directory is provided
+                    let dir = fs::read_dir(file_path).expect("Failed to read directory");
+                    let files = dir.filter_map(Result::ok).map(|entry| entry.path()).collect::<Vec<_>>();
+                    println!("Creating archive from files: {:?}", files);
+                    create_archive_from_files(files, &filename, *verbose, *archive_type.as_ref().unwrap()).expect("Failed to create archive");
+                }
+            } else {
+                eprintln!("File or directory does not exist");
+                std::process::exit(1);
+            }
+        }
+
+        Some(("-l", sub_matches)) => {
+            let filename = handle_filename(sub_matches);
+            if let Err(e) = list_archive_contents(filename) {
+                eprintln!("Error listing archive contents: {}", e);
+                std::process::exit(1);
+            }
+            
         }
 
         Some(("-search", sub_matches)) => {
