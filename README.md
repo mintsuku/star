@@ -18,7 +18,7 @@ Before you begin, ensure you have met the following requirements:
 To install Star, follow these steps:  
 
 ```bash  
-git clone https://github.com/shelovesmox/star.git  
+git clone https://github.com/mintsuku/star.git  
 ```  
 
 ```bash   
